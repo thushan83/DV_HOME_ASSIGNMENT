@@ -9,12 +9,14 @@ price_data <- read.csv("../home_assignment_data_pricing.csv")
 filter_data<- function(data,product_type){
   data %>%
     filter(category == product_type) %>% 
-    group_by(store_id,year,month_numerical, product_id) %>% 
+    group_by(store_id,year,month_numerical, week, weekday, product_id) %>% 
     summarise_at(vars("log_of_cpi_adjusted_price"), mean)
 }
 
 #Filtering the Ps3 data,
 ps3dt<-filter_data(price_data,"Ps3")
+
+ps3dt_date<-ps3dt[order(ps3dt$store_id,ps3dt$year,ps3dt$week,ps3dt$weekday),]
 
 ps3dt<-ps3dt[order(ps3dt$store_id,ps3dt$year,ps3dt$month_numerical),]
 

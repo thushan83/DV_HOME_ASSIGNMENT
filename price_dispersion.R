@@ -27,14 +27,45 @@ ps3dt$store_id <- factor(ps3dt$store_id)
 
 ps3dt$product_id <- factor(ps3dt$product_id)
 
-#setDT(ps3dt)
+setDT(ps3dt)
 #ps3mean_price<-ps3dt[ ,list(price=mean(price), store_id), by=product_id]
 
-ggplot(ps3dt, aes(x = month_numerical, y = log_of_cpi_adjusted_price, color = store_id)) +
+ggplot(ps3dt, aes(alpha(0.01),x = month_numerical, y = log_of_cpi_adjusted_price, color = store_id)) +
   xlab("Time")+
   ylab("Ps3 product mean price")+
-  geom_line()+
+  geom_line(size = 1)+
   facet_wrap(~year)
+
+ggplot(ps3dt, aes(alpha(0.01),x = month_numerical, y = log_of_cpi_adjusted_price, color = store_id)) +
+  xlab("Time")+
+  ylab("Ps3 product mean price")+
+  geom_line(size = 1)+
+  facet_wrap(~product_id)
+
+ps3dt_product <- ps3dt[product_id=="118314"]
+
+ggplot(ps3dt_product, aes(alpha(0.01),x = month_numerical, y = log_of_cpi_adjusted_price, color = store_id)) +
+  xlab("Time")+
+  ylab("Ps3 product mean price")+
+  geom_line(size = 1)
+
+ps3dt_2016 <- ps3dt[year=="2016"]
+
+ggplot(ps3dt_2016, aes(alpha(0.01),x = month_numerical, y = log_of_cpi_adjusted_price, color = store_id)) +
+  xlab("Time")+
+  ylab("Ps3 product mean price")+
+  geom_line(size = 1)+
+  facet_wrap(~year)
+
+ps3dt_2016_store <- ps3dt_2016[store_id=="9169"]
+
+ggplot(ps3dt_2016_store, aes(alpha(0.01),x = month_numerical, y = log_of_cpi_adjusted_price, color = store_id)) +
+  xlab("Time")+
+  ylab("Ps3 product mean price")+
+  geom_point(color="black", size=5)+
+  geom_line(size = 1)+
+  facet_wrap(~year)
+
 
 
 ggplot(ps3dt, aes(x = time(log_of_cpi_adjusted_price), y = log_of_cpi_adjusted_price, color = store_id)) +

@@ -2,6 +2,7 @@ library(tidyverse)
 library(ggplot2)
 library(data.table) 
 library(scales)
+library(ggridges)
 
 price_data <- read.csv("../home_assignment_data_pricing.csv")
 
@@ -20,7 +21,7 @@ ps3dt_date<-ps3dt[order(ps3dt$store_id,ps3dt$year,ps3dt$week,ps3dt$weekday),]
 
 #Filtering the Ps3 data and consider store ids between 10000 and 17000
 ps3dt <- ps3dt %>%
-  filter(store_id > 10000, store_id < 17000)
+  filter(store_id > 5000, store_id < 17000)
 
 ps3dt$store_id <- factor(ps3dt$store_id)
 
@@ -48,16 +49,132 @@ ggplot(ps3dt, aes(alpha(0.01),x = date, y = log_of_cpi_adjusted_price, color = s
 #[46] "2719933" "2782670" "2811073" "2992621" "2992622" "3096664" "3096685" "3186032" "3195060"
 #[55] "3195120" "3520955" "3704473"
 
-ps3dt_product <- ps3dt[product_id=="3186032"]
 
-ggplot(ps3dt_product, aes(x = date, y = log_of_cpi_adjusted_price, color = store_id, group = store_id)) +
+products<-c("1619812", 
+             "2992621",
+             "2992622",
+             "3096664",
+             "3186032",
+             "2719933",
+             "446376"
+)
+
+ps3dt_filtered_products<- ps3dt[product_id %in% products]
+
+
+ggplot(ps3dt_filtered_products, aes(x = date, y = log_of_cpi_adjusted_price, color = store_id, group = store_id)) +
   xlab("Date")+
   ylab("Ps3 price")+
-  geom_step(size = 1)+
-  scale_x_date(breaks = "1 month")+
+  geom_step(size = 5, alpha = 0.5)+
+  scale_x_date(breaks = "2 weeks")+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
+ggplot(ps3dt_filtered_products, aes(x = date, y = log_of_cpi_adjusted_price, color = store_id, group = store_id)) +
+  xlab("Date")+
+  ylab("Ps3 price")+
+  geom_step(size = 1, alpha = 0.5)+
+  scale_x_date(breaks = "4 month")+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))+
+  facet_wrap(~product_id)
+
+ggplot(ps3dt_filtered_products, aes(x = price, y = product_id, fill = stat(x))) + 
+  geom_density_ridges_gradient(quantile_lines = TRUE, quantiles = 4,alpha = 0.8)+
+  scale_fill_viridis_c(name = "Price", option = "C") +
+  labs(title = 'PS3 prices from 2016-05-01 to 2017-01-01')+
+  xlab("Item price")+
+  ylab("PS3 product id")
+
 #---------------------------------------------------------------------------
+#consider data from 2016-05-01 to 2017-01-01
 
 
+get_mean_prices_sd_by_vendor<-function(input){
+  input %>%                                        # Specify data frame
+    group_by(product_id, "store"= store_id) %>%                         # Specify group indicator
+    summarise_at(vars(price),              # Specify column
+                 list(mean_price = mean, sd = sd))            # Specify function
+  
+}
+
+get_sd_and_product_id<- function(input){
+  c(sd(input$mean_price),input$product_id)
+}
+
+ps3dt_product_gt20160501_1619812<-ps3dt_product1[product_id=="1619812"]
+
+ggplot(ps3dt_product_gt20160501_1619812, aes(x = price, y = store_id, fill = stat(x))) + 
+  geom_density_ridges_gradient(quantile_lines = TRUE, quantiles = 4,alpha = 0.8)+
+  scale_fill_viridis_c(name = "Price", option = "C") +
+  labs(title = 'PS3 item 1619812 prices from 2016-05-01 to 2017-01-01')+
+  xlab("Item price")+
+  ylab("Store id")
+
+ps3dt_product_gt20160501_2992621<-ps3dt_product1[product_id=="2992621"]
+
+ggplot(ps3dt_product_gt20160501_2992621, aes(x = price, y = store_id, fill = stat(x))) + 
+  geom_density_ridges_gradient(quantile_lines = TRUE, quantiles = 4,alpha = 0.8)+
+  scale_fill_viridis_c(name = "Price", option = "C") +
+  labs(title = 'PS3 item 2992621 prices from 2016-05-01 to 2017-01-01')+
+  xlab("Item price")+
+  ylab("Store id")
+
+ps3dt_product_gt20160501_2992622<-ps3dt_product1[product_id=="2992622"]
+
+ggplot(ps3dt_product_gt20160501_2992622, aes(x = price, y = store_id, fill = stat(x))) + 
+  geom_density_ridges_gradient(quantile_lines = TRUE, quantiles = 4,alpha = 0.8)+
+  scale_fill_viridis_c(name = "Price", option = "C") +
+  labs(title = 'PS3 item 2992622 prices from 2016-05-01 to 2017-01-01')+
+  xlab("Item price")+
+  ylab("Store id")
+
+
+ps3dt_product_gt20160501_3096664<-ps3dt_product1[product_id=="3096664"]
+
+ggplot(ps3dt_product_gt20160501_3096664, aes(x = price, y = store_id, fill = stat(x))) + 
+  geom_density_ridges_gradient(quantile_lines = TRUE, quantiles = 4,alpha = 0.8)+
+  scale_fill_viridis_c(name = "Price", option = "C") +
+  labs(title = 'PS3 item 3096664 prices from 2016-05-01 to 2017-01-01')+
+  xlab("Item price")+
+  ylab("Store id")
+
+ps3dt_product_gt20160501_3186032<-ps3dt_product1[product_id=="3186032"]
+
+ggplot(ps3dt_product_gt20160501_3186032, aes(x = price, y = store_id, fill = stat(x))) + 
+  geom_density_ridges_gradient(quantile_lines = TRUE, quantiles = 4,alpha = 0.8)+
+  scale_fill_viridis_c(name = "Price", option = "C") +
+  labs(title = 'PS3 item 3186032 prices from 2016-05-01 to 2017-01-01')+
+  xlab("Item price")+
+  ylab("Store id")
+
+ps3dt_product_gt20160501_2719933<-ps3dt_product1[product_id=="2719933"]
+
+ggplot(ps3dt_product_gt20160501_2719933, aes(x = price, y = store_id, fill = stat(x))) + 
+  geom_density_ridges_gradient(quantile_lines = TRUE, quantiles = 4,alpha = 0.8)+
+  scale_fill_viridis_c(name = "Price", option = "C") +
+  labs(title = 'PS3 item 2719933 prices from 2016-05-01 to 2017-01-01')+
+  xlab("Item price")+
+  ylab("Store id")
+
+ps3dt_product_gt20160501_446376<-ps3dt_product1[product_id=="446376"]
+
+ggplot(ps3dt_product_gt20160501_2719933, aes(x = price, y = store_id, fill = stat(x))) + 
+  geom_density_ridges_gradient(quantile_lines = TRUE, quantiles = 4,alpha = 0.8)+
+  scale_fill_viridis_c(name = "Price", option = "C") +
+  labs(title = 'PS3 item 446376 prices from 2016-05-01 to 2017-01-01')+
+  xlab("Item price")+
+  ylab("Store id")
+
+p1<-get_mean_prices_sd_by_vendor(ps3dt_product_gt20160501_1619812)
+
+p2<-get_mean_prices_sd_by_vendor(ps3dt_product_gt20160501_2992621)
+
+p3<-get_mean_prices_sd_by_vendor(ps3dt_product_gt20160501_2992622)
+
+p4<-get_mean_prices_sd_by_vendor(ps3dt_product_gt20160501_3096664)
+
+p5<-get_mean_prices_sd_by_vendor(ps3dt_product_gt20160501_3186032)
+
+p6<-get_mean_prices_sd_by_vendor(ps3dt_product_gt20160501_2719933)
+
+p7<-get_mean_prices_sd_by_vendor(ps3dt_product_gt20160501_446376)
 

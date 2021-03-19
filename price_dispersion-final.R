@@ -82,7 +82,9 @@ ggplot(ps3dt_filtered_products, aes(x = price, y = product_id, fill = stat(x))) 
   scale_fill_viridis_c(name = "Price", option = "C") +
   labs(title = 'PS3 prices from 2016-05-01 to 2017-01-01')+
   xlab("Item price")+
-  ylab("PS3 product id")
+  ylab("PS3 product id")+
+  theme_ridges()
+
 
 #---------------------------------------------------------------------------
 #consider data from 2016-05-01 to 2017-01-01
@@ -102,65 +104,64 @@ get_sd_and_product_id<- function(input){
 
 ps3dt_product_gt20160501_1619812<-ps3dt_product1[product_id=="1619812"]
 
-ggplot(ps3dt_product_gt20160501_1619812, aes(x = price, y = store_id, fill = stat(x))) + 
-  geom_density_ridges_gradient(quantile_lines = TRUE, quantiles = 4,alpha = 0.8)+
-  scale_fill_viridis_c(name = "Price", option = "C") +
+ggplot(ps3dt_product_gt20160501_1619812, aes(x = price, y = store_id, fill = stat(y))) + 
+  geom_density_ridges(alpha = 0.8)+
+  scale_fill_viridis_c(name = "Store Id", option = "C") +
   labs(title = 'PS3 item 1619812 prices from 2016-05-01 to 2017-01-01')+
   xlab("Item price")+
   ylab("Store id")
 
 ps3dt_product_gt20160501_2992621<-ps3dt_product1[product_id=="2992621"]
 
-ggplot(ps3dt_product_gt20160501_2992621, aes(x = price, y = store_id, fill = stat(x))) + 
-  geom_density_ridges_gradient(quantile_lines = TRUE, quantiles = 4,alpha = 0.8)+
-  scale_fill_viridis_c(name = "Price", option = "C") +
-  labs(title = 'PS3 item 2992621 prices from 2016-05-01 to 2017-01-01')+
+ggplot(ps3dt_product_gt20160501_2992621, aes(x = price, y = store_id, fill = stat(y))) + 
+  geom_density_ridges(alpha = 0.8)+
+  scale_fill_viridis_c(name = "Store Id", option = "B") +
+  labs(title = 'PS3 item 1619812 prices from 2016-05-01 to 2017-01-01')+
   xlab("Item price")+
   ylab("Store id")
 
 ps3dt_product_gt20160501_2992622<-ps3dt_product1[product_id=="2992622"]
 
-ggplot(ps3dt_product_gt20160501_2992622, aes(x = price, y = store_id, fill = stat(x))) + 
-  geom_density_ridges_gradient(quantile_lines = TRUE, quantiles = 4,alpha = 0.8)+
-  scale_fill_viridis_c(name = "Price", option = "C") +
-  labs(title = 'PS3 item 2992622 prices from 2016-05-01 to 2017-01-01')+
+ggplot(ps3dt_product_gt20160501_2992622, aes(x = price, y = store_id, fill = stat(y))) + 
+  geom_density_ridges(alpha = 0.8)+
+  scale_fill_viridis_c(name = "Store Id", option = "B") +
+  labs(title = 'PS3 item 1619812 prices from 2016-05-01 to 2017-01-01')+
   xlab("Item price")+
   ylab("Store id")
 
-
 ps3dt_product_gt20160501_3096664<-ps3dt_product1[product_id=="3096664"]
 
-ggplot(ps3dt_product_gt20160501_3096664, aes(x = price, y = store_id, fill = stat(x))) + 
-  geom_density_ridges_gradient(quantile_lines = TRUE, quantiles = 4,alpha = 0.8)+
-  scale_fill_viridis_c(name = "Price", option = "C") +
-  labs(title = 'PS3 item 3096664 prices from 2016-05-01 to 2017-01-01')+
+ggplot(ps3dt_product_gt20160501_3096664, aes(x = price, y = store_id, fill = stat(y))) + 
+  geom_density_ridges(alpha = 0.8)+
+  scale_fill_viridis_c(name = "Store Id", option = "B") +
+  labs(title = 'PS3 item 1619812 prices from 2016-05-01 to 2017-01-01')+
   xlab("Item price")+
   ylab("Store id")
 
 ps3dt_product_gt20160501_3186032<-ps3dt_product1[product_id=="3186032"]
 
-ggplot(ps3dt_product_gt20160501_3186032, aes(x = price, y = store_id, fill = stat(x))) + 
-  geom_density_ridges_gradient(quantile_lines = TRUE, quantiles = 4,alpha = 0.8)+
-  scale_fill_viridis_c(name = "Price", option = "C") +
-  labs(title = 'PS3 item 3186032 prices from 2016-05-01 to 2017-01-01')+
+ggplot(ps3dt_product_gt20160501_3186032, aes(x = price, y = store_id, fill = stat(y))) + 
+  geom_density_ridges(alpha = 0.8)+
+  scale_fill_viridis_c(name = "Store Id", option = "B") +
+  labs(title = 'PS3 item 1619812 prices from 2016-05-01 to 2017-01-01')+
   xlab("Item price")+
   ylab("Store id")
 
 ps3dt_product_gt20160501_2719933<-ps3dt_product1[product_id=="2719933"]
 
-ggplot(ps3dt_product_gt20160501_2719933, aes(x = price, y = store_id, fill = stat(x))) + 
-  geom_density_ridges_gradient(quantile_lines = TRUE, quantiles = 4,alpha = 0.8)+
-  scale_fill_viridis_c(name = "Price", option = "C") +
-  labs(title = 'PS3 item 2719933 prices from 2016-05-01 to 2017-01-01')+
+ggplot(ps3dt_product_gt20160501_2719933, aes(x = price, y = store_id, fill = stat(y))) + 
+  geom_density_ridges(alpha = 0.8)+
+  scale_fill_viridis_c(name = "Store Id", option = "B") +
+  labs(title = 'PS3 item 1619812 prices from 2016-05-01 to 2017-01-01')+
   xlab("Item price")+
   ylab("Store id")
 
 ps3dt_product_gt20160501_446376<-ps3dt_product1[product_id=="446376"]
 
-ggplot(ps3dt_product_gt20160501_2719933, aes(x = price, y = store_id, fill = stat(x))) + 
-  geom_density_ridges_gradient(quantile_lines = TRUE, quantiles = 4,alpha = 0.8)+
-  scale_fill_viridis_c(name = "Price", option = "C") +
-  labs(title = 'PS3 item 446376 prices from 2016-05-01 to 2017-01-01')+
+ggplot(ps3dt_product_gt20160501_446376, aes(x = price, y = store_id, fill = stat(y))) + 
+  geom_density_ridges(alpha = 0.8)+
+  scale_fill_viridis_c(name = "Store Id", option = "B") +
+  labs(title = 'PS3 item 1619812 prices from 2016-05-01 to 2017-01-01')+
   xlab("Item price")+
   ylab("Store id")
 
@@ -177,4 +178,10 @@ p5<-get_mean_prices_sd_by_vendor(ps3dt_product_gt20160501_3186032)
 p6<-get_mean_prices_sd_by_vendor(ps3dt_product_gt20160501_2719933)
 
 p7<-get_mean_prices_sd_by_vendor(ps3dt_product_gt20160501_446376)
+
+
+#Task 2------------------------------------------------------------
+
+
+
 

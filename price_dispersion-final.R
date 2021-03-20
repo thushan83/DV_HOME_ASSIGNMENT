@@ -65,29 +65,25 @@ ps3dt_filtered_products<- ps3dt[product_id %in% products]
 ggplot(ps3dt_filtered_products, aes(x = date, y = log_of_cpi_adjusted_price, color = store_id, group = store_id)) +
   xlab("Date")+
   ylab("Ps3 price")+
-  geom_step(size = 5, alpha = 0.5)+
-  scale_x_date(breaks = "2 weeks")+
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-ggplot(ps3dt_filtered_products, aes(x = date, y = log_of_cpi_adjusted_price, color = store_id, group = store_id)) +
-  xlab("Date")+
-  ylab("Ps3 price")+
   geom_step(size = 1, alpha = 0.5)+
   scale_x_date(breaks = "4 month")+
   theme(axis.text.x = element_text(angle = 90, hjust = 1))+
   facet_wrap(~product_id)
 
+
+#---------------------------------------------------------------------------
+#consider data from 2016-05-01 to 2017-01-01
+ps3dt_filtered_products<-ps3dt_filtered_products%>%filter(year>="2015-05-01")
+
+
 ggplot(ps3dt_filtered_products, aes(x = price, y = product_id, fill = stat(x))) + 
   geom_density_ridges_gradient(quantile_lines = TRUE, quantiles = 4,alpha = 0.8)+
   scale_fill_viridis_c(name = "Price", option = "C") +
-  labs(title = 'PS3 prices from 2016-05-01 to 2017-01-01')+
+  labs(title = 'PS3 prices from 2015-05-01 to 2017-01-01')+
   xlab("Item price")+
   ylab("PS3 product id")+
   theme_ridges()
 
-
-#---------------------------------------------------------------------------
-#consider data from 2016-05-01 to 2017-01-01
 
 
 get_mean_prices_sd_by_vendor<-function(input){
@@ -107,7 +103,7 @@ ps3dt_product_gt20160501_1619812<-ps3dt_filtered_products[product_id=="1619812"]
 ggplot(ps3dt_product_gt20160501_1619812, aes(x = price, y = store_id, fill = stat(y))) + 
   geom_density_ridges(alpha = 0.8)+
   scale_fill_viridis_c(name = "Store Id", option = "C") +
-  labs(title = 'PS3 item 1619812 prices from 2016-05-01 to 2017-01-01')+
+  labs(title = 'PS3 item 1619812 prices from 2015-05-01 to 2017-01-01')+
   xlab("Item price")+
   ylab("Store id")
 
@@ -116,7 +112,7 @@ ps3dt_product_gt20160501_2992621<-ps3dt_filtered_products[product_id=="2992621"]
 ggplot(ps3dt_product_gt20160501_2992621, aes(x = price, y = store_id, fill = stat(y))) + 
   geom_density_ridges(alpha = 0.8)+
   scale_fill_viridis_c(name = "Store Id", option = "B") +
-  labs(title = 'PS3 item 1619812 prices from 2016-05-01 to 2017-01-01')+
+  labs(title = 'PS3 item 1619812 prices from 2015-05-01 to 2017-01-01')+
   xlab("Item price")+
   ylab("Store id")
 
@@ -125,7 +121,7 @@ ps3dt_product_gt20160501_2992622<-ps3dt_filtered_products[product_id=="2992622"]
 ggplot(ps3dt_product_gt20160501_2992622, aes(x = price, y = store_id, fill = stat(y))) + 
   geom_density_ridges(alpha = 0.8)+
   scale_fill_viridis_c(name = "Store Id", option = "B") +
-  labs(title = 'PS3 item 1619812 prices from 2016-05-01 to 2017-01-01')+
+  labs(title = 'PS3 item 1619812 prices from 2015-05-01 to 2017-01-01')+
   xlab("Item price")+
   ylab("Store id")
 
@@ -134,7 +130,7 @@ ps3dt_product_gt20160501_3096664<-ps3dt_filtered_products[product_id=="3096664"]
 ggplot(ps3dt_product_gt20160501_3096664, aes(x = price, y = store_id, fill = stat(y))) + 
   geom_density_ridges(alpha = 0.8)+
   scale_fill_viridis_c(name = "Store Id", option = "B") +
-  labs(title = 'PS3 item 1619812 prices from 2016-05-01 to 2017-01-01')+
+  labs(title = 'PS3 item 1619812 prices from 2015-05-01 to 2017-01-01')+
   xlab("Item price")+
   ylab("Store id")
 
@@ -143,7 +139,7 @@ ps3dt_product_gt20160501_3186032<-ps3dt_filtered_products[product_id=="3186032"]
 ggplot(ps3dt_product_gt20160501_3186032, aes(x = price, y = store_id, fill = stat(y))) + 
   geom_density_ridges(alpha = 0.8)+
   scale_fill_viridis_c(name = "Store Id", option = "B") +
-  labs(title = 'PS3 item 1619812 prices from 2016-05-01 to 2017-01-01')+
+  labs(title = 'PS3 item 1619812 prices from 2015-05-01 to 2017-01-01')+
   xlab("Item price")+
   ylab("Store id")
 
@@ -152,7 +148,7 @@ ps3dt_product_gt20160501_2719933<-ps3dt_filtered_products[product_id=="2719933"]
 ggplot(ps3dt_product_gt20160501_2719933, aes(x = price, y = store_id, fill = stat(y))) + 
   geom_density_ridges(alpha = 0.8)+
   scale_fill_viridis_c(name = "Store Id", option = "B") +
-  labs(title = 'PS3 item 1619812 prices from 2016-05-01 to 2017-01-01')+
+  labs(title = 'PS3 item 1619812 prices from 2015-05-01 to 2017-01-01')+
   xlab("Item price")+
   ylab("Store id")
 
@@ -161,7 +157,7 @@ ps3dt_product_gt20160501_446376<-ps3dt_filtered_products[product_id=="446376"]
 ggplot(ps3dt_product_gt20160501_446376, aes(x = price, y = store_id, fill = stat(y))) + 
   geom_density_ridges(alpha = 0.8)+
   scale_fill_viridis_c(name = "Store Id", option = "B") +
-  labs(title = 'PS3 item 1619812 prices from 2016-05-01 to 2017-01-01')+
+  labs(title = 'PS3 item 1619812 prices from 2015-05-01 to 2017-01-01')+
   xlab("Item price")+
   ylab("Store id")
 
@@ -182,7 +178,8 @@ p7<-get_mean_prices_sd_by_vendor(ps3dt_product_gt20160501_446376)
 
 #Task 2------------------------------------------------------------
 
-ps3dt_3186032_new<-ps3dt_product_gt20160501_3186032
+ps3dt_3186032_new<-ps3dt%>%filter(product_id == "3186032")
+
 ps3dt_3186032_new$product_id <- as.character(ps3dt_product_gt20160501_3186032_new$product_id)
 ps3dt_3186032_new$store_id <- as.character(ps3dt_product_gt20160501_3186032_new$store_id)
 
@@ -190,11 +187,33 @@ filter_cols<-function(input,filter_year){
   input%>%filter(year == filter_year)%>%select(store_id,cpi_adjusted_price)
 }
 
+summerize<-function(input){
+  input %>%                                 
+    group_by(store_id) %>%                        
+    summarise_at(vars(cpi_adjusted_price),             
+                 list(mean_price = mean))     
+}
+
+ps3dt_3186032_sumry<-summerize(ps3dt_3186032_new)
+ps3dt_3186032_sumry<-as.data.frame(ps3dt_3186032_sumry)
+#set the row names
+row.names(ps3dt_3186032_sumry)<-c(ps3dt_3186032_sumry$store_id)
+#remove the colum used for row names
+ps3dt_3186032_sumry_new<-ps3dt_3186032_sumry[,-1]
+ps3dt_3186032_sumry_new.scaled<- scale(ps3dt_3186032_sumry_new)
+
+
 ps3dt_3186032_2015<-filter_cols(ps3dt_3186032_new,"2015")
 ps3dt_3186032_2016<-filter_cols(ps3dt_3186032_new,"2016")
 ps3dt_3186032_2017<-filter_cols(ps3dt_3186032_new,"2017")
 
-ps3dt_3186032_2015<-na.omit(ps3dt_3186032_2015)
-ps3dt_3186032_2015.scaled<-scale(ps3dt_3186032_2015)
+
+ps3dt_3186032_2015<-summerize(ps3dt_3186032_2015)
+ps3dt_3186032_2015<-as.data.frame(ps3dt_3186032_2015)
+#set the row names
+row.names(ps3dt_3186032_2015)<-c(ps3dt_3186032_2015$store_id)
+#remove the colum used for row names
+ps3dt_3186032_2015_new<-ps3dt_3186032_2015[,-1]
+ps3dt_3186032_2015.scaled<- scale(ps3dt_3186032_2015)
 
 

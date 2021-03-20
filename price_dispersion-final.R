@@ -17,9 +17,9 @@ filter_data<- function(data,product_type){
 #Filtering the Ps3 data,
 ps3dt<-filter_data(price_data,"Ps3")
 
-ps3dt_date<-ps3dt[order(ps3dt$store_id,ps3dt$year,ps3dt$week,ps3dt$weekday),]
+#ps3dt_date<-ps3dt[order(ps3dt$store_id,ps3dt$year,ps3dt$week,ps3dt$weekday),]
 
-#Filtering the Ps3 data and consider store ids between 10000 and 17000
+#Filtering the Ps3 data and consider store ids between 5000 and 17000
 ps3dt <- ps3dt %>%
   filter(store_id > 5000, store_id < 17000)
 
@@ -102,7 +102,7 @@ get_sd_and_product_id<- function(input){
   c(sd(input$mean_price),input$product_id)
 }
 
-ps3dt_product_gt20160501_1619812<-ps3dt_product1[product_id=="1619812"]
+ps3dt_product_gt20160501_1619812<-ps3dt_filtered_products[product_id=="1619812"]
 
 ggplot(ps3dt_product_gt20160501_1619812, aes(x = price, y = store_id, fill = stat(y))) + 
   geom_density_ridges(alpha = 0.8)+
@@ -111,7 +111,7 @@ ggplot(ps3dt_product_gt20160501_1619812, aes(x = price, y = store_id, fill = sta
   xlab("Item price")+
   ylab("Store id")
 
-ps3dt_product_gt20160501_2992621<-ps3dt_product1[product_id=="2992621"]
+ps3dt_product_gt20160501_2992621<-ps3dt_filtered_products[product_id=="2992621"]
 
 ggplot(ps3dt_product_gt20160501_2992621, aes(x = price, y = store_id, fill = stat(y))) + 
   geom_density_ridges(alpha = 0.8)+
@@ -120,7 +120,7 @@ ggplot(ps3dt_product_gt20160501_2992621, aes(x = price, y = store_id, fill = sta
   xlab("Item price")+
   ylab("Store id")
 
-ps3dt_product_gt20160501_2992622<-ps3dt_product1[product_id=="2992622"]
+ps3dt_product_gt20160501_2992622<-ps3dt_filtered_products[product_id=="2992622"]
 
 ggplot(ps3dt_product_gt20160501_2992622, aes(x = price, y = store_id, fill = stat(y))) + 
   geom_density_ridges(alpha = 0.8)+
@@ -129,7 +129,7 @@ ggplot(ps3dt_product_gt20160501_2992622, aes(x = price, y = store_id, fill = sta
   xlab("Item price")+
   ylab("Store id")
 
-ps3dt_product_gt20160501_3096664<-ps3dt_product1[product_id=="3096664"]
+ps3dt_product_gt20160501_3096664<-ps3dt_filtered_products[product_id=="3096664"]
 
 ggplot(ps3dt_product_gt20160501_3096664, aes(x = price, y = store_id, fill = stat(y))) + 
   geom_density_ridges(alpha = 0.8)+
@@ -138,7 +138,7 @@ ggplot(ps3dt_product_gt20160501_3096664, aes(x = price, y = store_id, fill = sta
   xlab("Item price")+
   ylab("Store id")
 
-ps3dt_product_gt20160501_3186032<-ps3dt_product1[product_id=="3186032"]
+ps3dt_product_gt20160501_3186032<-ps3dt_filtered_products[product_id=="3186032"]
 
 ggplot(ps3dt_product_gt20160501_3186032, aes(x = price, y = store_id, fill = stat(y))) + 
   geom_density_ridges(alpha = 0.8)+
@@ -147,7 +147,7 @@ ggplot(ps3dt_product_gt20160501_3186032, aes(x = price, y = store_id, fill = sta
   xlab("Item price")+
   ylab("Store id")
 
-ps3dt_product_gt20160501_2719933<-ps3dt_product1[product_id=="2719933"]
+ps3dt_product_gt20160501_2719933<-ps3dt_filtered_products[product_id=="2719933"]
 
 ggplot(ps3dt_product_gt20160501_2719933, aes(x = price, y = store_id, fill = stat(y))) + 
   geom_density_ridges(alpha = 0.8)+
@@ -156,7 +156,7 @@ ggplot(ps3dt_product_gt20160501_2719933, aes(x = price, y = store_id, fill = sta
   xlab("Item price")+
   ylab("Store id")
 
-ps3dt_product_gt20160501_446376<-ps3dt_product1[product_id=="446376"]
+ps3dt_product_gt20160501_446376<-ps3dt_filtered_products[product_id=="446376"]
 
 ggplot(ps3dt_product_gt20160501_446376, aes(x = price, y = store_id, fill = stat(y))) + 
   geom_density_ridges(alpha = 0.8)+
@@ -182,6 +182,19 @@ p7<-get_mean_prices_sd_by_vendor(ps3dt_product_gt20160501_446376)
 
 #Task 2------------------------------------------------------------
 
+ps3dt_3186032_new<-ps3dt_product_gt20160501_3186032
+ps3dt_3186032_new$product_id <- as.character(ps3dt_product_gt20160501_3186032_new$product_id)
+ps3dt_3186032_new$store_id <- as.character(ps3dt_product_gt20160501_3186032_new$store_id)
 
+filter_cols<-function(input,filter_year){
+  input%>%filter(year == filter_year)%>%select(store_id,cpi_adjusted_price)
+}
+
+ps3dt_3186032_2015<-filter_cols(ps3dt_3186032_new,"2015")
+ps3dt_3186032_2016<-filter_cols(ps3dt_3186032_new,"2016")
+ps3dt_3186032_2017<-filter_cols(ps3dt_3186032_new,"2017")
+
+ps3dt_3186032_2015<-na.omit(ps3dt_3186032_2015)
+ps3dt_3186032_2015.scaled<-scale(ps3dt_3186032_2015)
 
 

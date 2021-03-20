@@ -3,6 +3,7 @@ library(ggplot2)
 library(data.table) 
 library(scales)
 library(ggridges)
+library(ggdendro)
 
 price_data <- read.csv("../home_assignment_data_pricing.csv")
 
@@ -180,8 +181,14 @@ p7<-get_mean_prices_sd_by_vendor(ps3dt_product_gt20160501_446376)
 
 ps3dt_3186032_new<-ps3dt%>%filter(product_id == "3186032")
 
+setDT(ps3dt_3186032_new)
+
+store_ids<-c("11262","12551","1260","236","32","6276","2395","112")
+
+ps3dt_3186032_new<-ps3dt_3186032_new[store_id%in%store_ids]
+
 ps3dt_3186032_new$product_id <- as.character(ps3dt_product_gt20160501_3186032_new$product_id)
-ps3dt_3186032_new$store_id <- as.character(ps3dt_product_gt20160501_3186032_new$store_id)
+
 
 filter_cols<-function(input,filter_year){
   input%>%filter(year == filter_year)%>%select(store_id,cpi_adjusted_price)
@@ -194,14 +201,6 @@ summerize<-function(input){
                  list(mean_price = mean))     
 }
 
-ps3dt_3186032_sumry<-summerize(ps3dt_3186032_new)
-ps3dt_3186032_sumry<-as.data.frame(ps3dt_3186032_sumry)
-#set the row names
-row.names(ps3dt_3186032_sumry)<-c(ps3dt_3186032_sumry$store_id)
-#remove the colum used for row names
-ps3dt_3186032_sumry_new<-ps3dt_3186032_sumry[,-1]
-ps3dt_3186032_sumry_new.scaled<- scale(ps3dt_3186032_sumry_new)
-
 
 ps3dt_3186032_2015<-filter_cols(ps3dt_3186032_new,"2015")
 ps3dt_3186032_2016<-filter_cols(ps3dt_3186032_new,"2016")
@@ -209,11 +208,36 @@ ps3dt_3186032_2017<-filter_cols(ps3dt_3186032_new,"2017")
 
 
 ps3dt_3186032_2015<-summerize(ps3dt_3186032_2015)
+ps3dt_3186032_2015$store_id <- as.character(ps3dt_3186032_2015$store_id)
 ps3dt_3186032_2015<-as.data.frame(ps3dt_3186032_2015)
-#set the row names
 row.names(ps3dt_3186032_2015)<-c(ps3dt_3186032_2015$store_id)
-#remove the colum used for row names
-ps3dt_3186032_2015_new<-ps3dt_3186032_2015[,-1]
-ps3dt_3186032_2015.scaled<- scale(ps3dt_3186032_2015)
+clust_prices_2015<-hclust(distances,method = "ward.D")
+plot(clust_prices_2015,labels = ps3dt_3186032_2015$store_id)
+num_of_clusters = 3;
+group<- cutree(clust_prices_2015, k=num_of_clusters)
+rect.hclust(clust_prices_2015, k= num_of_clusters, border = "red")
 
+
+ps3dt_3186032_2016<-summerize(ps3dt_3186032_2016)
+ps3dt_3186032_2016$store_id <- as.character(ps3dt_3186032_2016$store_id)
+ps3dt_3186032_2016<-as.data.frame(ps3dt_3186032_2016)
+row.names(ps3dt_3186032_2016)<-c(ps3dt_3186032_2016$store_id)
+distances<-dist(ps3dt_3186032_2016[,2], method="euclidean")
+clust_prices_2016<-hclust(distances,method = "ward.D")
+plot(clust_prices_2016,labels = ps3dt_3186032_2016$store_id)
+num_of_clusters = 3;
+group<- cutree(clust_prices_2016, k=num_of_clusters)
+rect.hclust(clust_prices_2016, k= num_of_clusters, border = "red")
+
+
+ps3dt_3186032_2017<-summerize(ps3dt_3186032_2017)
+ps3dt_3186032_2017$store_id <- as.character(ps3dt_3186032_2017$store_id)
+ps3dt_3186032_2017<-as.data.frame(ps3dt_3186032_2017)
+row.names(ps3dt_3186032_2017)<-c(ps3dt_3186032_2017$store_id)
+distances<-dist(ps3dt_3186032_2017[,2], method="euclidean")
+clust_prices_2017<-hclust(distances,method = "ward.D")
+plot(clust_prices_2017,labels = ps3dt_3186032_2017$store_id)
+num_of_clusters = 3;
+group<- cutree(clust_prices_2017, k=num_of_clusters)
+rect.hclust(clust_prices_2017, k= num_of_clusters, border = "red")
 

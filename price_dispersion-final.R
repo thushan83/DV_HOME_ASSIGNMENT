@@ -166,6 +166,7 @@ p7<-get_mean_prices_sd_by_vendor(ps3dt_product_gt20160501_446376)
 
 
 #Task 2------------------------------------------------------------
+ps3dt<-filter_data(price_data,"Ps3")
 
 ps3dt_3186032_new<-ps3dt%>%filter(product_id == "3186032")
 
@@ -173,7 +174,7 @@ setDT(ps3dt_3186032_new)
 
 store_ids<-c("11262","12551","1260","236","32","6276","2395","112")
 
-ps3dt_3186032_new<-ps3dt_3186032_new[store_id%in%store_ids]
+ps3dt_3186032_new<-ps3dt_3186032_new[ps3dt_3186032_new$store_id%in%store_ids]
 
 ps3dt_3186032_new$product_id <- as.character(ps3dt_3186032_new$product_id)
 
@@ -191,23 +192,26 @@ summerize<-function(input){
 
 clusters.color = c("red","green","blue")
 
-ps3dt_3186032_all<-summerize(ps3dt_3186032_new)
-ps3dt_3186032_all.scale<-scale(ps3dt_3186032_all$mean_price)
+ps3dt_3186032_all<-ps3dt_3186032_new
+ps3dt_3186032_all.scale<-scale(ps3dt_3186032_all$cpi_adjusted_price)
 ps3dt_3186032_all$store_id <- as.character(ps3dt_3186032_all$store_id)
 distances<-dist(ps3dt_3186032_all.scale, method="euclidean")
 clust_prices_all<-hclust(distances,method = "ward.D")
 num_of_clusters = 3;
 group<- cutree(clust_prices_all, k=num_of_clusters)
-#rect.hclust(clust_prices_all, k= num_of_clusters, border = clusters.color)
-
-seeds_df_cl <- mutate(ps3dt_3186032_new, cluster = group)
+seeds_df_cl <- mutate(ps3dt_3186032_all, cluster = group)
 ggplot(seeds_df_cl, aes(x=store_id, y = cpi_adjusted_price, color = factor(cluster)))+
- labs(title = 'PS3 item 1619812 price clusters \n of three levels')+
+ labs(title = 'PS3 item 1619812 price clusters \n of three levels',  fill = "Store id")+
  geom_point()+
  ylab("Cpi adjusted price")+
  xlab("Store id")+
  facet_wrap(~year)+
- theme(axis.text.x = element_text(angle = 90, hjust = 1))
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1),
+    plot.title = element_text(color="#766E6A", size=13,hjust = 0.5),
+    axis.title.x = element_text(color="#766E6A", size=10),
+    axis.title.y = element_text(color="#766E6A", size=10)
+  )
 
 
 #------------------
@@ -217,41 +221,23 @@ ps3dt_3186032_2015<-filter_cols(ps3dt_3186032_new,"2015")
 ps3dt_3186032_2016<-filter_cols(ps3dt_3186032_new,"2016")
 ps3dt_3186032_2017<-filter_cols(ps3dt_3186032_new,"2017")
 
+generate_and_plot_clusters<-function(input, year){
+  input<-summerize(input)
+  input$store_id <- as.character(input$store_id)
+  input.scale<-scale(input$mean_price)
+  distances<-dist(input.scale, method="euclidean")
+  clust_prices<-hclust(distances,method = "ward.D")
+  title = paste("The clustering of product 3186032 \n prices in ",year)
+  plot(clust_prices_2016,labels = input$store_id,
+       main= title,  xlab = "Store id", sub = NA)
+  num_of_clusters = 3;
+  group<- cutree(clust_prices, k=num_of_clusters)
+  rect.hclust(clust_prices, k= num_of_clusters, border = clusters.color)
+}
 
-ps3dt_3186032_2015<-summerize(ps3dt_3186032_2015)
-ps3dt_3186032_2015$store_id <- as.character(ps3dt_3186032_2015$store_id)
-ps3dt_3186032_2015.scale<-scale(ps3dt_3186032_2015$mean_price)
-distances<-dist(ps3dt_3186032_2015.scale, method="euclidean")
-clust_prices_2015<-hclust(distances,method = "ward.D")
-plot(clust_prices_2015,labels = ps3dt_3186032_2015$store_id,
-     main="The clustering of product 3186032 \n prices in 2015 ",  xlab = NA, sub = NA)
-num_of_clusters = 3;
-group<- cutree(clust_prices_2015, k=num_of_clusters)
-rect.hclust(clust_prices_2015, k= num_of_clusters, border = clusters.color)
+generate_and_plot_clusters(ps3dt_3186032_2015, "2015")
 
+generate_and_plot_clusters(ps3dt_3186032_2016, "2016")
 
-ps3dt_3186032_2016<-summerize(ps3dt_3186032_2016)
-ps3dt_3186032_2016$store_id <- as.character(ps3dt_3186032_2016$store_id)
-ps3dt_3186032_2016.scale<-scale(ps3dt_3186032_2016$mean_price)
-distances<-dist(ps3dt_3186032_2016.scale, method="euclidean")
-clust_prices_2016<-hclust(distances,method = "ward.D")
-plot(clust_prices_2016,labels = ps3dt_3186032_2016$store_id,
-     main="The clustering of product 3186032 \n prices in 2016 ",  xlab = NA, sub = NA)
-num_of_clusters = 3;
-group<- cutree(clust_prices_2016, k=num_of_clusters)
-rect.hclust(clust_prices_2016, k= num_of_clusters, border = clusters.color)
-
-
-ps3dt_3186032_2017<-summerize(ps3dt_3186032_2017)
-ps3dt_3186032_2017$store_id <- as.character(ps3dt_3186032_2017$store_id)
-ps3dt_3186032_2017.scale<-scale(ps3dt_3186032_2017$mean_price)
-distances<-dist(ps3dt_3186032_2017.scale, method="euclidean")
-clust_prices_2017<-hclust(distances,method = "ward.D")
-plot(clust_prices_2017,labels = ps3dt_3186032_2017$store_id,
-     main="The clustering of product 3186032 \n prices in 2017 ", xlab = NA, sub = NA)
-
-num_of_clusters = 3;
-group<- cutree(clust_prices_2017, k=num_of_clusters)
-rect.hclust(clust_prices_2017, k= num_of_clusters
-            , border = clusters.color)
+generate_and_plot_clusters(ps3dt_3186032_2017, "2017")
 

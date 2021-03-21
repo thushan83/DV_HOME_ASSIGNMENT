@@ -88,10 +88,12 @@ ggplot(ps3dt_filtered_products, aes(x = price, y = product_id, fill = stat(x))) 
 
 
 get_mean_prices_sd_by_vendor<-function(input){
-  data<-input %>%                                        # Specify data frame
-    group_by(product_id, "store"= store_id) %>%                         # Specify group indicator
-    summarise_at(vars(price),              # Specify column
-                 list(mean_price = mean, sd = sd))            # Specify function
+  data<-input %>%                                        
+    group_by(product_id, "store"= store_id) %>%                         
+    summarise_at(vars(price),             
+                 list(mean_price = mean)) 
+  
+  data$sd<-sd(data$mean_price)
   return(data)
 }
 
@@ -173,7 +175,7 @@ store_ids<-c("11262","12551","1260","236","32","6276","2395","112")
 
 ps3dt_3186032_new<-ps3dt_3186032_new[store_id%in%store_ids]
 
-ps3dt_3186032_new$product_id <- as.character(ps3dt_product_gt20160501_3186032_new$product_id)
+ps3dt_3186032_new$product_id <- as.character(ps3dt_3186032_new$product_id)
 
 
 filter_cols<-function(input,filter_year){
@@ -196,7 +198,7 @@ distances<-dist(ps3dt_3186032_all.scale, method="euclidean")
 clust_prices_all<-hclust(distances,method = "ward.D")
 num_of_clusters = 3;
 group<- cutree(clust_prices_all, k=num_of_clusters)
-rect.hclust(clust_prices_2015, k= num_of_clusters, border = clusters.color)
+#rect.hclust(clust_prices_all, k= num_of_clusters, border = clusters.color)
 
 seeds_df_cl <- mutate(ps3dt_3186032_new, cluster = group)
 ggplot(seeds_df_cl, aes(x=store_id, y = cpi_adjusted_price, color = factor(cluster)))+

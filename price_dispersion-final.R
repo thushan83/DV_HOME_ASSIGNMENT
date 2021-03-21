@@ -88,79 +88,65 @@ ggplot(ps3dt_filtered_products, aes(x = price, y = product_id, fill = stat(x))) 
 
 
 get_mean_prices_sd_by_vendor<-function(input){
-  input %>%                                        # Specify data frame
+  data<-input %>%                                        # Specify data frame
     group_by(product_id, "store"= store_id) %>%                         # Specify group indicator
     summarise_at(vars(price),              # Specify column
                  list(mean_price = mean, sd = sd))            # Specify function
-  
+  return(data)
 }
 
 get_sd_and_product_id<- function(input){
   c(sd(input$mean_price),input$product_id)
 }
 
-ps3dt_product_gt20160501_1619812<-ps3dt_filtered_products[product_id=="1619812"]
 
-ggplot(ps3dt_product_gt20160501_1619812, aes(x = price, y = store_id, fill = stat(y))) + 
-  geom_density_ridges(alpha = 0.8)+
-  scale_fill_viridis_c(name = "Store Id", option = "C") +
-  labs(title = 'PS3 item 1619812 prices from 2015-05-01 to 2017-01-01')+
-  xlab("Item price")+
-  ylab("Store id")
+draw_density_ridges<-function(input,prod_id){
+  input<-input[product_id==prod_id]
+  title = paste('PS3 item ',prod_id,' prices from \n 2015-05-01 to 2017-01-01')
+  ggplot(input, aes(x = price, y = store_id, fill = factor(store_id))) + 
+    geom_density_ridges(alpha = 0.8)+
+    scale_colour_manual(values = input$store_id)+
+    labs(title = title, fill = "Store id")+
+    xlab("Item price")+
+    ylab("Store id")+
+    theme(
+      plot.title = element_text(color="#766E6A", size=13,hjust = 0.5),
+      axis.title.x = element_text(color="#766E6A", size=10),
+      axis.title.y = element_text(color="#766E6A", size=10)
+    )
+}
+
+
+ps3dt_product_gt20160501_1619812<-ps3dt_filtered_products[product_id=="1619812"]
 
 ps3dt_product_gt20160501_2992621<-ps3dt_filtered_products[product_id=="2992621"]
 
-ggplot(ps3dt_product_gt20160501_2992621, aes(x = price, y = store_id, fill = stat(y))) + 
-  geom_density_ridges(alpha = 0.8)+
-  scale_fill_viridis_c(name = "Store Id", option = "B") +
-  labs(title = 'PS3 item 1619812 prices from 2015-05-01 to 2017-01-01')+
-  xlab("Item price")+
-  ylab("Store id")
-
 ps3dt_product_gt20160501_2992622<-ps3dt_filtered_products[product_id=="2992622"]
-
-ggplot(ps3dt_product_gt20160501_2992622, aes(x = price, y = store_id, fill = stat(y))) + 
-  geom_density_ridges(alpha = 0.8)+
-  scale_fill_viridis_c(name = "Store Id", option = "B") +
-  labs(title = 'PS3 item 1619812 prices from 2015-05-01 to 2017-01-01')+
-  xlab("Item price")+
-  ylab("Store id")
 
 ps3dt_product_gt20160501_3096664<-ps3dt_filtered_products[product_id=="3096664"]
 
-ggplot(ps3dt_product_gt20160501_3096664, aes(x = price, y = store_id, fill = stat(y))) + 
-  geom_density_ridges(alpha = 0.8)+
-  scale_fill_viridis_c(name = "Store Id", option = "B") +
-  labs(title = 'PS3 item 1619812 prices from 2015-05-01 to 2017-01-01')+
-  xlab("Item price")+
-  ylab("Store id")
-
 ps3dt_product_gt20160501_3186032<-ps3dt_filtered_products[product_id=="3186032"]
-
-ggplot(ps3dt_product_gt20160501_3186032, aes(x = price, y = store_id, fill = stat(y))) + 
-  geom_density_ridges(alpha = 0.8)+
-  scale_fill_viridis_c(name = "Store Id", option = "B") +
-  labs(title = 'PS3 item 1619812 prices from 2015-05-01 to 2017-01-01')+
-  xlab("Item price")+
-  ylab("Store id")
 
 ps3dt_product_gt20160501_2719933<-ps3dt_filtered_products[product_id=="2719933"]
 
-ggplot(ps3dt_product_gt20160501_2719933, aes(x = price, y = store_id, fill = stat(y))) + 
-  geom_density_ridges(alpha = 0.8)+
-  scale_fill_viridis_c(name = "Store Id", option = "B") +
-  labs(title = 'PS3 item 1619812 prices from 2015-05-01 to 2017-01-01')+
-  xlab("Item price")+
-  ylab("Store id")
-
 ps3dt_product_gt20160501_446376<-ps3dt_filtered_products[product_id=="446376"]
 
-ggplot(ps3dt_product_gt20160501_446376, aes(x = price, y = store_id, fill = stat(y))) + 
-  geom_density_ridges(alpha = 0.8)+
-  scale_fill_viridis_c(name = "Store Id", option = "B") +
-  labs(title = 'PS3 item 1619812 prices from 2015-05-01 to 2017-01-01')+
-  xlab("Item price")+
-  ylab("Store id")
+
+draw_density_ridges(ps3dt_product_gt20160501_1619812,"1619812")
+
+draw_density_ridges(ps3dt_product_gt20160501_2992621,"2992621")
+
+draw_density_ridges(ps3dt_product_gt20160501_2992622,"2992622")
+
+draw_density_ridges(ps3dt_product_gt20160501_3096664,"3096664")
+
+draw_density_ridges(ps3dt_product_gt20160501_3186032,"3186032")
+
+draw_density_ridges(ps3dt_product_gt20160501_2719933,"2719933")
+
+draw_density_ridges(ps3dt_product_gt20160501_446376,"446376")
+
+
 
 p1<-get_mean_prices_sd_by_vendor(ps3dt_product_gt20160501_1619812)
 
@@ -201,6 +187,29 @@ summerize<-function(input){
                  list(mean_price = mean))     
 }
 
+clusters.color = c("red","green","blue")
+
+ps3dt_3186032_all<-summerize(ps3dt_3186032_new)
+ps3dt_3186032_all.scale<-scale(ps3dt_3186032_all$mean_price)
+ps3dt_3186032_all$store_id <- as.character(ps3dt_3186032_all$store_id)
+distances<-dist(ps3dt_3186032_all.scale, method="euclidean")
+clust_prices_all<-hclust(distances,method = "ward.D")
+num_of_clusters = 3;
+group<- cutree(clust_prices_all, k=num_of_clusters)
+rect.hclust(clust_prices_2015, k= num_of_clusters, border = clusters.color)
+
+seeds_df_cl <- mutate(ps3dt_3186032_new, cluster = group)
+ggplot(seeds_df_cl, aes(x=store_id, y = cpi_adjusted_price, color = factor(cluster)))+
+ labs(title = 'PS3 item 1619812 price clusters \n of three levels')+
+ geom_point()+
+ ylab("Cpi adjusted price")+
+ xlab("Store id")+
+ facet_wrap(~year)+
+ theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+
+#------------------
+
 
 ps3dt_3186032_2015<-filter_cols(ps3dt_3186032_new,"2015")
 ps3dt_3186032_2016<-filter_cols(ps3dt_3186032_new,"2016")
@@ -209,35 +218,38 @@ ps3dt_3186032_2017<-filter_cols(ps3dt_3186032_new,"2017")
 
 ps3dt_3186032_2015<-summerize(ps3dt_3186032_2015)
 ps3dt_3186032_2015$store_id <- as.character(ps3dt_3186032_2015$store_id)
-ps3dt_3186032_2015<-as.data.frame(ps3dt_3186032_2015)
-row.names(ps3dt_3186032_2015)<-c(ps3dt_3186032_2015$store_id)
+ps3dt_3186032_2015.scale<-scale(ps3dt_3186032_2015$mean_price)
+distances<-dist(ps3dt_3186032_2015.scale, method="euclidean")
 clust_prices_2015<-hclust(distances,method = "ward.D")
-plot(clust_prices_2015,labels = ps3dt_3186032_2015$store_id)
+plot(clust_prices_2015,labels = ps3dt_3186032_2015$store_id,
+     main="The clustering of product 3186032 \n prices in 2015 ",  xlab = NA, sub = NA)
 num_of_clusters = 3;
 group<- cutree(clust_prices_2015, k=num_of_clusters)
-rect.hclust(clust_prices_2015, k= num_of_clusters, border = "red")
+rect.hclust(clust_prices_2015, k= num_of_clusters, border = clusters.color)
 
 
 ps3dt_3186032_2016<-summerize(ps3dt_3186032_2016)
 ps3dt_3186032_2016$store_id <- as.character(ps3dt_3186032_2016$store_id)
-ps3dt_3186032_2016<-as.data.frame(ps3dt_3186032_2016)
-row.names(ps3dt_3186032_2016)<-c(ps3dt_3186032_2016$store_id)
-distances<-dist(ps3dt_3186032_2016[,2], method="euclidean")
+ps3dt_3186032_2016.scale<-scale(ps3dt_3186032_2016$mean_price)
+distances<-dist(ps3dt_3186032_2016.scale, method="euclidean")
 clust_prices_2016<-hclust(distances,method = "ward.D")
-plot(clust_prices_2016,labels = ps3dt_3186032_2016$store_id)
+plot(clust_prices_2016,labels = ps3dt_3186032_2016$store_id,
+     main="The clustering of product 3186032 \n prices in 2016 ",  xlab = NA, sub = NA)
 num_of_clusters = 3;
 group<- cutree(clust_prices_2016, k=num_of_clusters)
-rect.hclust(clust_prices_2016, k= num_of_clusters, border = "red")
+rect.hclust(clust_prices_2016, k= num_of_clusters, border = clusters.color)
 
 
 ps3dt_3186032_2017<-summerize(ps3dt_3186032_2017)
 ps3dt_3186032_2017$store_id <- as.character(ps3dt_3186032_2017$store_id)
-ps3dt_3186032_2017<-as.data.frame(ps3dt_3186032_2017)
-row.names(ps3dt_3186032_2017)<-c(ps3dt_3186032_2017$store_id)
-distances<-dist(ps3dt_3186032_2017[,2], method="euclidean")
+ps3dt_3186032_2017.scale<-scale(ps3dt_3186032_2017$mean_price)
+distances<-dist(ps3dt_3186032_2017.scale, method="euclidean")
 clust_prices_2017<-hclust(distances,method = "ward.D")
-plot(clust_prices_2017,labels = ps3dt_3186032_2017$store_id)
+plot(clust_prices_2017,labels = ps3dt_3186032_2017$store_id,
+     main="The clustering of product 3186032 \n prices in 2017 ", xlab = NA, sub = NA)
+
 num_of_clusters = 3;
 group<- cutree(clust_prices_2017, k=num_of_clusters)
-rect.hclust(clust_prices_2017, k= num_of_clusters, border = "red")
+rect.hclust(clust_prices_2017, k= num_of_clusters
+            , border = clusters.color)
 

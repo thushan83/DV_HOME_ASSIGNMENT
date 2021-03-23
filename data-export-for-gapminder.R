@@ -55,7 +55,7 @@ export<-function(input){
   prod_id<-input$product_id[1]
   tmp<-input%>%select(store_id,date,log_of_cpi_adjusted_price)
   tmp$date<-str_replace_all(tmp$date, c('-'), "")
-  file_path=paste(".\\mydataclean_prod_",prod_id,".xlsx")
+  file_path=paste(".\\mydataclean_prod_",prod_id,".csv")
   write.csv(tmp,file_path, row.names = TRUE)
 }
 
@@ -85,7 +85,7 @@ transform_to_csv<-function(input){
       )
     )
     
-    file_path=paste(".\\mydataclean_prod_",prod_id,"_stor_",str_id,".xlsx")
+    file_path=paste(".\\mydataclean_prod_",prod_id,"_stor_",str_id,".csv")
     write.csv(result,file_path, row.names = TRUE)
     
     i<-i+1

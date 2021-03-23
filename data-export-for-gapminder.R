@@ -51,10 +51,18 @@ ps3dt_product_gt20160501_2719933<-ps3dt_filtered_products[product_id=="2719933"]
 
 ps3dt_product_gt20160501_446376<-ps3dt_filtered_products[product_id=="446376"]
 
+export<-function(input){
+  prod_id<-input$product_id[0]
+  tmp<-input%>%select(date,store_id,log_of_cpi_adjusted_price)
+  tmp$date<-str_replace_all(tmp$date, c('-'), "")
+  file_path=paste(".\\mydataclean_prod_",prod_id,".xlsx")
+  write.csv(tmp,file_path, row.names = TRUE)
+}
+
 
 transform_to_csv<-function(input){
   store_ids = unique(input$store_id)
-  prod_id<-input$product_is[0]
+  prod_id<-input$product_is[1]
   i<-0
   for (str_id in store_ids) {
     
@@ -77,7 +85,7 @@ transform_to_csv<-function(input){
       )
     )
     
-    file_path=paste(".\\mydataclean_prod_",prod_id,"_stor_",str_id,".csv")
+    file_path=paste(".\\mydataclean_prod_",prod_id,"_stor_",str_id,".xlsx")
     write.csv(result,file_path, row.names = TRUE)
     
     i<-i+1
@@ -85,5 +93,7 @@ transform_to_csv<-function(input){
   
   return(result)
 }
+
+export(ps3dt_product_gt20160501_1619812)
 
 transform_to_csv(ps3dt_product_gt20160501_1619812)
